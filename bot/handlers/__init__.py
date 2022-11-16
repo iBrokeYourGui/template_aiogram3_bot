@@ -1,1 +1,2 @@
 from .common import register_common_handlers
+from .example_messages import register_example_messages_handlers
