@@ -1,9 +1,10 @@
 from aiogram import types, Dispatcher
 from aiogram.filters import Command
+import bot.keyboards as kbd
 
 
 async def cmd_start(message: types.Message):
-    await message.answer('Ой кто пришёл!')
+    await message.answer('Ой кто пришёл!', reply_markup=kbd.main_keyboard)
 
 
 async def cmd_help(message: types.Message):

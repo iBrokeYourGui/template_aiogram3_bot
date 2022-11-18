@@ -1,4 +1,4 @@
-from aiogram import F, types, Dispatcher, html
+from aiogram import F, types, Dispatcher, html, Bot
 from aiogram.filters import Command, CommandObject
 
 
@@ -11,6 +11,34 @@ async def get_params_from_command(message: types.Message, command: CommandObject
         await message.answer(f'Аргументы переданные с командой: {command.args}')
     else:
         await message.answer('Аргументы не были переданы. Передайте аргументы после команды /args')
+
+
+async def reaction_on_sticker(message: types.Message, bot: Bot):
+    """ Скачает стикер в указанную папку и вернет его отправителю """
+    await bot.download(
+        message.sticker,
+        destination=f"./tmp/{message.sticker.file_id}.webp"
+    )
+    await message.reply_sticker(message.sticker.file_id)
+
+
+async def get_items_from_message(message: types.Message):
+    """ Извлечь сущности сообщения """
+    result = {
+        'url': 'N/A',
+        'email': 'N/A',
+        'code': 'N/A'
+    }
+    entities = message.entities or []
+    for item in entities:
+        if item.type in result.keys():
+            result[item.type] = item.extract_from(message.text)
+    await message.answer(
+        "Результат извлечения данных:\n"
+        f"URL: {html.quote(result['url'])}\n"
+        f"E-mail: {html.quote(result['email'])}\n"
+        f"Пароль: {html.quote(result['code'])}"
+    )
 
 
 async def formatted_text(message: types.Message):
@@ -48,10 +76,12 @@ import os
 os.path()
 print('11')
 ```
-    """, parse_mode="MarkdownV2")
+""", parse_mode="MarkdownV2")
 
 
 def register_example_messages_handlers(dp: Dispatcher):
     dp.message.register(dick_in_text, F.text == 'pipi')
     dp.message.register(formatted_text, Command('text'))
     dp.message.register(get_params_from_command, Command('args'))
+    dp.message.register(get_items_from_message, F.text)
+    dp.message.register(reaction_on_sticker, F.content_type == 'sticker')  # .in_({'sticker', 'text', 'etc'})
