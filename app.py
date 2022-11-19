@@ -11,6 +11,10 @@ dp = Dispatcher()
 
 
 async def main():
+    """
+       Не забываем про порядок регистрации обработчиков.
+       Все обрабатывается строго в заданном порядке
+    """
     handlers.register_common_handlers(dp)
     handlers.register_example_kbd_buttons(dp)
     handlers.register_example_messages_handlers(dp)

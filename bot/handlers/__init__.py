@@ -1,3 +1,3 @@
 from .common import register_common_handlers
-from .example_messages import register_example_messages_handlers
+from .example_markup import register_example_messages_handlers
 from .example_buttons import register_example_kbd_buttons
