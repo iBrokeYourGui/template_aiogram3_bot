@@ -1,7 +1,9 @@
 from aiogram import F, types, Dispatcher, html, Bot
-from aiogram.filters import Command, CommandObject
+from aiogram.filters import Command, CommandObject, CommandStart
 
 import bot.keyboards as kbd
+from bot import filters
+from bot .config import config
 
 
 async def cmd_start(message: types.Message):
@@ -10,7 +12,7 @@ async def cmd_start(message: types.Message):
 
 async def cmd_help(message: types.Message):
     await message.answer("""
-    /ыефке - начало работы с ботом
+    /start - начало работы с ботом
     /help - получить текущее сообщение
     /markup - покажет все возможные варианты форматирования текста
     /args <аргументы> - распарсит по пробелу, переданные после команды аргументы 
@@ -68,9 +70,9 @@ async def get_items_from_message(message: types.Message):
 
 
 def register_common_handlers(dp: Dispatcher):
-    dp.message.register(cmd_start, Command('start'))
-    dp.message.register(cmd_help, Command('help'))
+    dp.message.register(cmd_start, CommandStart())
+    dp.message.register(cmd_help, Command('help'), filters.IsAdmin(config.TELEGRAM_BOT_ADMIN))
     dp.message.register(get_params_from_command, Command('args'))
     dp.message.register(reaction_on_word, F.text == 'pipi')
-    dp.message.register(get_items_from_message, F.text)
+    # dp.message.register(get_items_from_message, F.text)
     dp.message.register(reaction_on_sticker, F.content_type == 'sticker')  # .in_({'sticker', 'text', 'etc'})

@@ -1,9 +1,11 @@
-from aiogram.filters import BoundFilter
+from aiogram.filters import BaseFilter
 from aiogram.types import Message
-from ..config import config
 
 
-class IsAdmin(BoundFilter):
+class IsAdmin(BaseFilter):
+    def __init__(self, admin: int):
+        self.admin = admin
 
-    async def check(self, message: Message) -> bool:
-        return message.from_user.id == int(config.TELEGRAM_BOT_ADMIN.get('telegram_id'))
+    async def __call__(self, message: Message) -> bool:
+        return message.from_user.id == self.admin
+
