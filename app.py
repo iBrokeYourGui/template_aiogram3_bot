@@ -18,7 +18,9 @@ async def main():
     handlers.register_common_handlers(dp)
     handlers.register_example_kbd_buttons(dp)
     handlers.register_example_messages_handlers(dp)
-    # dp.message.outer_middleware.register(middleware.CounterMiddleware())
+    # outer_middleware - срабатывыет всегда
+    # middleware - срабатывыет после фильтров
+    dp.message.middleware.register(middleware.FlagsMiddleware())
     dp.message.middleware.register(middleware.CounterMiddleware())
     await dp.start_polling(bot)
 

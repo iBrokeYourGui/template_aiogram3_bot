@@ -4,6 +4,11 @@ from aiogram.types import Message
 
 
 class CounterMiddleware(BaseMiddleware):
+    """
+    Считает кол-во объектов типа "Message"
+    Может быть вставлена как до обработчика так и после.
+    Вставка задаётся при регистрации. Смотри файл app.py
+    """
     def __init__(self) -> None:
         self.counter = 0
 
@@ -14,6 +19,8 @@ class CounterMiddleware(BaseMiddleware):
         data: dict[str, Any],
     ) -> Any:
         self.counter += 1
-        print("we're in")
+        print("Выполнить действие ДО хэндлера")
         data['counter'] = self.counter
-        return await handler(event, data)
+        result = await handler(event, data)
+        print("Выполнить действие ПОСЛЕ хэндлера")
+        return result

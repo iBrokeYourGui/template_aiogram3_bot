@@ -8,7 +8,7 @@ main_keyboard = (
   ReplyKeyboardBuilder()
   .row(btn_search, btn_settings)
   .button(text='Инлайн клавиатура')
-  .button(text='Кнопка 4')
+  .button(text='Передать флаг через мидлу')
   .adjust(2)
   .as_markup(
     resize_keyboard=True,
