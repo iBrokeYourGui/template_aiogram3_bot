@@ -6,17 +6,19 @@ from bot import filters
 from bot .config import config
 
 
-async def cmd_start(message: types.Message):
+async def cmd_start(message: types.Message, counter: int):
     await message.answer('Ой кто пришёл!', reply_markup=kbd.main_keyboard)
+    print(counter)
 
 
-async def cmd_help(message: types.Message):
+async def cmd_help(message: types.Message, counter: int):
     await message.answer("""
     /start - начало работы с ботом
     /help - получить текущее сообщение
     /markup - покажет все возможные варианты форматирования текста
     /args <аргументы> - распарсит по пробелу, переданные после команды аргументы 
     """)
+    print(counter)
 
 
 async def get_params_from_command(message: types.Message, command: CommandObject):
@@ -72,6 +74,7 @@ async def get_items_from_message(message: types.Message):
 def register_common_handlers(dp: Dispatcher):
     dp.message.register(cmd_start, CommandStart())
     dp.message.register(cmd_help, Command('help'), filters.IsAdmin(config.TELEGRAM_BOT_ADMIN))
+    # dp.message.register(cmd_help, Command('help'))
     dp.message.register(get_params_from_command, Command('args'))
     dp.message.register(reaction_on_word, F.text == 'pipi')
     # dp.message.register(get_items_from_message, F.text)
