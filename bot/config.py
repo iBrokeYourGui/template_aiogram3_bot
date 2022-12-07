@@ -6,11 +6,14 @@ env.read_env()
 
 
 class Config:
+    admins: set
+
     def __init__(self):
         self.LOG_LEVEL = env.str("LOG_LEVEL", "INFO")
         self.TELEGRAM_TOKEN = env.str("TELEGRAM_TOKEN", "")
         self.TELEGRAM_BOT_ADMIN = env.int("TELEGRAM_BOT_ADMIN", 0)
         self.TELEGRAM_BOT_USERS = env.list("TELEGRAM_BOT_USERS", [])
+        self.main_chat_id = 1111111111
 
 
 config = Config()
